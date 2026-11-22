@@ -1,0 +1,247 @@
+/* Ember Court — the table.
+   Dark green felt, gold trim, cream cards. Suits are colour AND shape:
+   Flame red ▲, Sword steel blue ◆, Leaf green ●. Cards are big and
+   high-contrast so they read at thumbnail size. */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #0d1f14;
+  color: #f3e9d2;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+#app {
+  width: min(1280px, 100vw);
+  height: 100vh;
+  max-height: 857px;
+  margin: 0 auto;
+  padding: 10px 18px;
+  background:
+    radial-gradient(ellipse at 50% 30%, #1d4a2c 0%, #122e1b 55%, #0b1d11 100%);
+  border: 3px solid #8a6d2f;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+}
+
+#topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#brand {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: #f5b83d;
+  text-shadow: 0 2px 0 #5c3a08;
+}
+
+#turn-banner {
+  font-size: 19px;
+  font-style: italic;
+  color: #ffe9b0;
+}
+
+#mute-btn, #end-turn, #begin-btn, #again-btn {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #2a1c05;
+  background: linear-gradient(#ffd970, #f5b83d);
+  border: 2px solid #8a6d2f;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+#mute-btn:hover, #end-turn:hover, #begin-btn:hover, #again-btn:hover { filter: brightness(1.08); }
+#end-turn:disabled { opacity: 0.45; cursor: default; }
+
+#opponent-row, #player-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 150px;
+}
+
+.portrait {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  font-weight: bold;
+  border: 3px solid #f5b83d;
+}
+.foe-portrait { background: radial-gradient(circle at 35% 30%, #6b6f7d, #2b2f3a); color: #dfe3ee; }
+.you-portrait { background: radial-gradient(circle at 35% 30%, #e5484d, #7d1a1e); color: #ffe9e9; }
+
+.fighter { width: 210px; flex: 0 0 210px; }
+.fighter .name { font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+
+.lifebar {
+  position: relative;
+  height: 24px;
+  background: #08130c;
+  border: 2px solid #8a6d2f;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.lifebar .fill { height: 100%; transition: width 0.35s ease; }
+.lifebar .fill.you { background: linear-gradient(90deg, #e5484d, #ff7a6b); }
+.lifebar .fill.foe { background: linear-gradient(90deg, #8f6fd8, #b79cff); }
+.lifebar .fill.flash { animation: liflash 0.4s ease; }
+@keyframes liflash { 0% { filter: brightness(2.2); } 100% { filter: brightness(1); } }
+.lifebar span {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 1px 2px #000;
+}
+
+.shield { font-size: 15px; margin-top: 4px; color: #c9d4e6; font-style: italic; }
+.shield.has-shield { color: #9ecbff; font-weight: bold; font-style: normal; }
+
+.hand { display: flex; gap: 8px; align-items: center; }
+#foe-hand { margin-left: auto; }
+#your-hand { flex: 1; justify-content: center; }
+
+#energy { display: flex; align-items: center; gap: 6px; margin-left: 6px; }
+.pip {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid #f5b83d; background: #3a2c08;
+}
+.pip.lit { background: radial-gradient(circle at 35% 30%, #ffe9a8, #f5b83d); box-shadow: 0 0 8px #f5b83d; }
+.energy-label { font-size: 15px; font-weight: bold; color: #ffe9b0; margin-left: 2px; white-space: nowrap; }
+
+#table {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  border-top: 2px solid rgba(245, 184, 61, 0.35);
+  border-bottom: 2px solid rgba(245, 184, 61, 0.35);
+  padding: 6px 4px;
+  min-height: 130px;
+}
+#log { flex: 1; font-size: 16px; line-height: 1.45; color: #e8ddc0; }
+#log p { margin: 3px 0; }
+#log p:first-child { color: #ffe9b0; font-weight: bold; }
+#center-stage { width: 220px; flex: 0 0 220px; display: flex; justify-content: center; }
+#last-play { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.last-play-label { font-size: 14px; font-style: italic; color: #c9d4e6; }
+#last-play .card { transform: scale(0.82); }
+#last-play .pop { animation: pop 0.3s ease; }
+@keyframes pop { 0% { transform: scale(0.6); opacity: 0.4; } 100% { transform: scale(0.82); opacity: 1; } }
+
+#controls { display: flex; align-items: center; gap: 16px; }
+#hint { font-size: 15px; color: #c9d4e6; font-style: italic; }
+
+/* ---- Cards ---- */
+.card {
+  width: 132px;
+  height: 188px;
+  flex: 0 0 132px;
+  background: linear-gradient(#fff8e7, #f3e2b8);
+  color: #241a08;
+  border: 3px solid var(--suit-dark);
+  border-radius: 10px;
+  padding: 7px 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(245, 184, 61, 0.25);
+  cursor: pointer;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+  position: relative;
+}
+#your-hand .card:hover {
+  transform: translateY(-16px) scale(1.04);
+  box-shadow: 0 12px 18px rgba(0, 0, 0, 0.6), 0 0 14px var(--glow);
+}
+.card.unplayable { filter: saturate(0.55) brightness(0.82); cursor: default; }
+.card-top { display: flex; justify-content: space-between; align-items: center; }
+.cost {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe9a8, #d99a16);
+  border: 2px solid #8a6d2f;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: bold; color: #2a1c05;
+}
+.suit { font-size: 26px; line-height: 1; }
+.card-name { font-size: 16px; font-weight: bold; text-align: center; margin-top: 4px; }
+.card-art {
+  flex: 1;
+  margin: 6px 0;
+  border-radius: 6px;
+  background: linear-gradient(160deg, var(--suit), var(--suit-dark));
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #fff; text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+}
+.art-glyph { font-size: 34px; line-height: 1; }
+.art-num { font-size: 34px; font-weight: bold; line-height: 1.05; }
+.art-label { font-size: 11px; letter-spacing: 2px; font-weight: bold; }
+.card-text { font-size: 13px; line-height: 1.28; text-align: center; min-height: 34px; }
+.card-key {
+  position: absolute; right: 6px; bottom: 4px;
+  font-size: 11px; color: #8a6d2f; font-weight: bold;
+}
+.card.face-down {
+  background: linear-gradient(160deg, #3a2c5c, #1d1430);
+  border-color: #8a6d2f;
+  cursor: default;
+  width: 92px; height: 132px; flex-basis: 92px;
+}
+.card-back {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #f5b83d; border: 2px solid rgba(245, 184, 61, 0.6); border-radius: 6px;
+}
+.back-mark { font-size: 30px; }
+.back-word { font-size: 11px; letter-spacing: 2px; text-align: center; margin-top: 4px; }
+
+/* ---- Overlays ---- */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(6, 14, 9, 0.82);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10;
+}
+.overlay.hidden { display: none; }
+.panel {
+  width: 640px;
+  background: linear-gradient(#1d4a2c, #122e1b);
+  border: 3px solid #f5b83d;
+  border-radius: 16px;
+  padding: 28px 36px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+}
+.panel h1 { font-size: 52px; letter-spacing: 6px; margin: 0 0 8px; color: #f5b83d; text-shadow: 0 3px 0 #5c3a08; }
+.panel h1.win { color: #ffd970; }
+.panel h1.loss { color: #9aa3b2; }
+.tagline { font-size: 19px; font-style: italic; color: #ffe9b0; margin: 6px 0 16px; }
+.rules { text-align: left; font-size: 16.5px; line-height: 1.55; margin: 0 0 20px; padding-left: 22px; }
+.rules li { margin-bottom: 6px; }
+.rules b { color: #ffd970; }
+.foot { font-size: 14px; color: #c9d4e6; font-style: italic; margin-top: 14px; }
+#begin-btn, #again-btn { font-size: 20px; padding: 12px 28px; }
+#confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+#confetti i {
+  position: absolute; top: -12px; width: 9px; height: 14px;
+  animation: fall 2.6s linear infinite;
+}
+@keyframes fall { to { transform: translateY(110vh) rotate(540deg); } }

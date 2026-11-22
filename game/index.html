@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ember Court — a duel card battler</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div id="app">
+  <header id="topbar">
+    <div id="brand">EMBER COURT</div>
+    <div id="turn-banner">The Court is in session</div>
+    <button id="mute-btn" type="button">Sound: on</button>
+  </header>
+
+  <section id="opponent-row" aria-label="Opponent">
+    <div class="portrait foe-portrait" title="Ashen Warden">W</div>
+    <div class="fighter">
+      <div class="name">Ashen Warden</div>
+      <div class="lifebar"><div class="fill foe" id="foe-life-fill"></div><span id="foe-life-text">20 / 20</span></div>
+      <div class="shield" id="foe-shield">No shield</div>
+    </div>
+    <div id="foe-hand" class="hand backs" aria-label="Warden's hand"></div>
+    <div id="foe-played" class="played-slot" aria-label="Warden's last play"></div>
+  </section>
+
+  <section id="table" aria-label="Table">
+    <div id="log" aria-live="polite"></div>
+    <div id="center-stage"><div id="last-play"></div></div>
+  </section>
+
+  <section id="player-row" aria-label="Your side">
+    <div class="portrait you-portrait" title="You">Y</div>
+    <div class="fighter">
+      <div class="name">You</div>
+      <div class="lifebar"><div class="fill you" id="you-life-fill"></div><span id="you-life-text">20 / 20</span></div>
+      <div class="shield" id="you-shield">No shield</div>
+    </div>
+    <div id="energy" aria-label="Energy"></div>
+    <div id="your-hand" class="hand" aria-label="Your hand"></div>
+  </section>
+
+  <footer id="controls">
+    <button id="end-turn" type="button">End Turn (Space)</button>
+    <span id="hint">Click a card or press 1–5 to play · R restarts · M mutes</span>
+  </footer>
+</div>
+
+<div id="title-screen" class="overlay">
+  <div class="panel">
+    <h1>EMBER COURT</h1>
+    <p class="tagline">A duel of flame, sword and leaf. First to 0 life loses the Court.</p>
+    <ul class="rules">
+      <li><b>Each turn:</b> draw 2 cards, gain 3 energy. Play cards, then end your turn.</li>
+      <li><b>▲ Flame</b> burns. <b>◆ Sword</b> strikes and draws. <b>● Leaf</b> shields and mends.</li>
+      <li><b>Chains:</b> Cinder Burst hits harder when a Flame card was already played this turn.</li>
+      <li><b>Shield</b> soaks damage first and stays until it is spent.</li>
+      <li>The Warden plays in the open — watch it, hold a shield for its big turn, punish it after.</li>
+    </ul>
+    <button id="begin-btn" type="button">Begin the Duel (Enter)</button>
+    <p class="foot">Keyboard: 1–5 play a card · Space ends the turn · R restarts</p>
+  </div>
+</div>
+
+<div id="end-screen" class="overlay hidden">
+  <div id="confetti" aria-hidden="true"></div>
+  <div class="panel">
+    <h1 id="end-title">VICTORY</h1>
+    <p id="end-sub" class="tagline"></p>
+    <button id="again-btn" type="button">Play Again (R)</button>
+  </div>
+</div>
+
+<script type="module" src="./main.js"></script>
+</body>
+</html>
